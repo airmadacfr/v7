@@ -102,7 +102,7 @@ textarea::placeholder{color:#3a3a3a}
   </div>
   <div id="sec" style="display:none">
     <div class="sec-hdr">
-      <span class="sec-t">Aperçus</span>
+      <span class="sec-t">Apercus</span>
       <span class="bdg" id="cnt"></span>
     </div>
     <div class="grid" id="grid"></div>
@@ -305,7 +305,7 @@ function esc(s) {
 
 function linkify(t) {
   return esc(t)
-    .replace(/(#[\wÀ-ɏ]+)/g, '<span class="bl">$1</span>')
+    .replace(/(#[\w]+)/g, '<span class="bl">$1</span>')
     .replace(/(@\w+)/g, '<span class="bl">$1</span>');
 }
 
