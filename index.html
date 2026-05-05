@@ -140,8 +140,7 @@ function tryPaste() {
     var ta = document.getElementById("urls");
     var clean = text.split("?")[0].split("#")[0];
     if (ta.value.indexOf(clean) !== -1) return;
-    ta.value = ta.value.trim() ? ta.value.trim() + "
-" + text.trim() : text.trim();
+    ta.value = ta.value.trim() ? ta.value.trim() + "\n" + text.trim() : text.trim();
     showToast("Lien colle automatiquement !");
   }).catch(function() {});
 }
