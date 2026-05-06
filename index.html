@@ -372,19 +372,19 @@ function buildPreview(d) {
 }
 
 function buildCaptureInner(d) {
-  return '<div style="display:flex;align-items:flex-start;gap:28px;margin-bottom:32px">' +
-    '<div style="width:120px;height:120px;border-radius:50%;overflow:hidden;flex-shrink:0;background:#273340">' +
+  return '<div style="display:flex;align-items:flex-start;gap:24px;margin-bottom:24px">' +
+    '<div style="width:96px;height:96px;border-radius:50%;overflow:hidden;flex-shrink:0;background:#273340">' +
       '<img src="' + LOGO + '" style="width:100%;height:100%;object-fit:cover;display:block" alt="" crossorigin="anonymous">' +
     '</div>' +
     '<div style="flex:1;min-width:0">' +
-      '<div style="font-size:42px;font-weight:700;color:#e7e9ea;display:flex;align-items:center;gap:12px">' +
-        escHtml(d.name) + '<span style="color:#1d9bf0;font-size:42px">&#10003;</span>' +
+      '<div style="font-size:34px;font-weight:700;color:#e7e9ea;display:flex;align-items:center;gap:10px">' +
+        escHtml(d.name) + '<span style="color:#1d9bf0;font-size:34px">&#10003;</span>' +
       '</div>' +
-      '<div style="font-size:34px;color:#71767b;margin-top:6px">@' + escHtml(d.handle) + '</div>' +
+      '<div style="font-size:27px;color:#71767b;margin-top:5px">@' + escHtml(d.handle) + '</div>' +
     '</div>' +
-    '<div style="font-weight:900;font-size:64px;color:#e7e9ea;line-height:1;flex-shrink:0">&#120143;</div>' +
+    '<div style="font-weight:900;font-size:50px;color:#e7e9ea;line-height:1;flex-shrink:0">&#120143;</div>' +
   '</div>' +
-  '<div style="font-size:44px;line-height:1.65;color:#e7e9ea;margin-bottom:36px;white-space:pre-wrap;word-break:break-word">' + linkify(d.text) + '</div>' +
+  '<div style="font-size:36px;line-height:1.6;color:#e7e9ea;margin-bottom:28px;white-space:pre-wrap;word-break:break-word">' + linkify(d.text) + '</div>' +
   buildImgGrid(d.images, true) +
   '' +
   '';
