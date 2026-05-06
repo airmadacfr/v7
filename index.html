@@ -72,7 +72,7 @@ textarea{width:100%;background:var(--d3);border:1px solid #2a2a2a;border-radius:
 .sticky-r{display:flex;gap:8px;flex-shrink:0}
 .toast{position:fixed;top:20px;right:20px;background:var(--d2);border:1px solid var(--gold);border-radius:10px;padding:10px 16px;font-size:13px;color:var(--w);transform:translateY(-80px);opacity:0;transition:all .3s;z-index:300}
 .toast.show{transform:translateY(0);opacity:1}
-#stage{position:fixed;left:-9999px;top:0;width:360px;background:transparent;z-index:-1;pointer-events:none}
+#stage{position:fixed;left:-9999px;top:0;width:1080px;background:transparent;z-index:-1;pointer-events:none}
 </style>
 </head>
 <body>
@@ -372,19 +372,19 @@ function buildPreview(d) {
 }
 
 function buildCaptureInner(d) {
-  return '<div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:14px">' +
-    '<div style="width:52px;height:52px;border-radius:50%;overflow:hidden;flex-shrink:0;background:#273340">' +
+  return '<div style="display:flex;align-items:flex-start;gap:28px;margin-bottom:32px">' +
+    '<div style="width:120px;height:120px;border-radius:50%;overflow:hidden;flex-shrink:0;background:#273340">' +
       '<img src="' + LOGO + '" style="width:100%;height:100%;object-fit:cover;display:block" alt="" crossorigin="anonymous">' +
     '</div>' +
     '<div style="flex:1;min-width:0">' +
-      '<div style="font-size:17px;font-weight:700;color:#e7e9ea;display:flex;align-items:center;gap:5px">' +
-        escHtml(d.name) + '<span style="color:#1d9bf0;font-size:17px">&#10003;</span>' +
+      '<div style="font-size:42px;font-weight:700;color:#e7e9ea;display:flex;align-items:center;gap:12px">' +
+        escHtml(d.name) + '<span style="color:#1d9bf0;font-size:42px">&#10003;</span>' +
       '</div>' +
-      '<div style="font-size:14px;color:#71767b;margin-top:3px">@' + escHtml(d.handle) + '</div>' +
+      '<div style="font-size:34px;color:#71767b;margin-top:6px">@' + escHtml(d.handle) + '</div>' +
     '</div>' +
-    '<div style="font-weight:900;font-size:26px;color:#e7e9ea;line-height:1;flex-shrink:0">&#120143;</div>' +
+    '<div style="font-weight:900;font-size:64px;color:#e7e9ea;line-height:1;flex-shrink:0">&#120143;</div>' +
   '</div>' +
-  '<div style="font-size:18px;line-height:1.65;color:#e7e9ea;margin-bottom:16px;white-space:pre-wrap;word-break:break-word">' + linkify(d.text) + '</div>' +
+  '<div style="font-size:44px;line-height:1.65;color:#e7e9ea;margin-bottom:36px;white-space:pre-wrap;word-break:break-word">' + linkify(d.text) + '</div>' +
   buildImgGrid(d.images, true) +
   '' +
   '';
@@ -406,50 +406,50 @@ function renderFrame(id) {
 
     /* -- OUTER WRAPPER: width fixed, height auto -- */
     var wrap = document.createElement("div");
-    wrap.style.cssText = "width:360px;background:linear-gradient(170deg,#06111e 0%,#0d1b2e 45%,#111428 75%,#0a0e1a 100%);position:relative;padding:0 0 0 0";
+    wrap.style.cssText = "width:1080px;background:linear-gradient(170deg,#06111e 0%,#0d1b2e 45%,#111428 75%,#0a0e1a 100%);position:relative;padding:0 0 0 0";
 
     /* accent line top */
     var tl = document.createElement("div");
-    tl.style.cssText = "width:100%;height:3px;background:linear-gradient(90deg,transparent,rgba(155,127,212,.85),rgba(201,168,76,.85),transparent)";
+    tl.style.cssText = "width:100%;height:6px;background:linear-gradient(90deg,transparent,rgba(155,127,212,.85),rgba(201,168,76,.85),transparent)";
     wrap.appendChild(tl);
 
     /* RM logo watermark behind content */
     var rmBg = document.createElement("img");
     rmBg.src = LOGO;
     rmBg.crossOrigin = "anonymous";
-    rmBg.style.cssText = "position:absolute;width:280px;height:280px;top:50%;left:50%;transform:translate(-50%,-50%);object-fit:contain;opacity:0.06;pointer-events:none";
+    rmBg.style.cssText = "position:absolute;width:700px;height:700px;top:50%;left:50%;transform:translate(-50%,-50%);object-fit:contain;opacity:0.06;pointer-events:none";
     wrap.appendChild(rmBg);
 
     /* CTA TOP */
     var ctaTop = document.createElement("div");
-    ctaTop.style.cssText = "width:100%;padding:14px 20px 10px;text-align:center";
+    ctaTop.style.cssText = "width:100%;padding:36px 50px 24px;text-align:center";
     ctaTop.innerHTML =
-      '<div style="font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#fff;line-height:1.4">' +
+      '<div style="font-size:34px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#fff;line-height:1.4">' +
         '&#129293; ABONNE-TOI - ON VISE LES 10 000 MADRIDISTAS &#129293;' +
       '</div>' +
-      '<div style="font-size:11px;color:rgba(201,168,76,.9);margin-top:4px;font-weight:600;letter-spacing:.5px">' +
+      '<div style="font-size:28px;color:rgba(201,168,76,.9);margin-top:8px;font-weight:600;letter-spacing:.5px">' +
         '&#128242; @RMadrid_actu - L\'ACTU DU REAL MADRID EN FRANCAIS' +
       '</div>';
     wrap.appendChild(ctaTop);
 
     /* TWEET BOX */
     var twPad = document.createElement("div");
-    twPad.style.cssText = "padding:8px 20px 16px;position:relative;z-index:1";
+    twPad.style.cssText = "padding:16px 50px 32px;position:relative;z-index:1";
     var twBox = document.createElement("div");
-    twBox.style.cssText = "background:#15202b;border:1px solid #2f3336;border-radius:18px;padding:20px 22px";
+    twBox.style.cssText = "background:#15202b;border:2px solid #2f3336;border-radius:42px;padding:48px 56px";
     twBox.innerHTML = buildCaptureInner(d);
     twPad.appendChild(twBox);
     wrap.appendChild(twPad);
 
     /* WATERMARK BAR */
     var wm = document.createElement("div");
-    wm.style.cssText = "width:100%;padding:10px 0 12px;display:flex;align-items:center;justify-content:center;gap:9px;border-top:1px solid rgba(155,127,212,.2)";
+    wm.style.cssText = "width:100%;padding:22px 0 28px;display:flex;align-items:center;justify-content:center;gap:20px;border-top:1px solid rgba(155,127,212,.2)";
     var wmL = document.createElement("img");
     wmL.src = LOGO;
     wmL.crossOrigin = "anonymous";
-    wmL.style.cssText = "width:26px;height:26px;border-radius:50%;object-fit:cover;flex-shrink:0";
+    wmL.style.cssText = "width:64px;height:64px;border-radius:50%;object-fit:cover;flex-shrink:0";
     var wmT = document.createElement("span");
-    wmT.style.cssText = "font-size:13px;font-weight:700;color:rgba(255,255,255,.8);letter-spacing:.5px;font-family:-apple-system,sans-serif";
+    wmT.style.cssText = "font-size:32px;font-weight:700;color:rgba(255,255,255,.8);letter-spacing:1px;font-family:-apple-system,sans-serif";
     wmT.textContent = "@RMadrid_actu";
     wm.appendChild(wmL);
     wm.appendChild(wmT);
@@ -464,11 +464,11 @@ function renderFrame(id) {
       setTimeout(function() {
         html2canvas(wrap, {
           backgroundColor: "#06111e",
-          scale: 3,
+          scale: 1,
           useCORS: true,
           allowTaint: false,
           logging: false,
-          width: 360,
+          width: 1080,
           height: wrap.scrollHeight
         }).then(function(canvas) {
           stage.innerHTML = "";
