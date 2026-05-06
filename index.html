@@ -385,7 +385,7 @@ function buildCaptureInner(d) {
     '<div style="font-weight:900;font-size:50px;color:#e7e9ea;line-height:1;flex-shrink:0">&#120143;</div>' +
   '</div>' +
   '<div style="font-size:36px;line-height:1.6;color:#e7e9ea;margin-bottom:28px;white-space:pre-wrap;word-break:break-word">' + linkify(d.text) + '</div>' +
-  buildImgGrid(d.images, true) +
+  (d.images && d.images.length ? '<div style="width:75%;margin:0 auto">' + buildImgGrid(d.images, true) + '</div>' : '') +
   '' +
   '';
 }
