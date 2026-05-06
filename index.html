@@ -124,6 +124,7 @@ textarea{width:100%;background:var(--d3);border:1px solid #2a2a2a;border-radius:
 <script>
 var LOGO = "/logo.png";
 var COVER = "/cover_img.png";
+var BONUS = "/img_bonus.png";
 var shots = {};
 var cache = {};
 var tweetOrder = [];
@@ -527,8 +528,9 @@ function renderFrame(id, slideNum, slideTotal) {
 function captureOne(id) {
   var btn = document.getElementById("ssb-" + id);
   btn.textContent = "..."; btn.disabled = true;
-  var total = tweetOrder.filter(function(i) { return !!cache[i]; }).length + 1;
-  var num = tweetOrder.indexOf(id) + 2;
+  var total = tweetOrder.filter(function(i) { return !!cache[i]; }).length + 2;
+  var idx0 = tweetOrder.indexOf(id);
+  var num = idx0 === 0 ? 2 : idx0 + 3;
   renderFrame(id, num, total).then(function(dataUrl) {
     shots[id] = dataUrl; btn.textContent = "OK";
     var dlb = document.getElementById("dlb-" + id);
@@ -540,8 +542,9 @@ function captureOne(id) {
 function previewOne(id) {
   var pvb = document.getElementById("pvb-" + id);
   pvb.textContent = "..."; pvb.disabled = true;
-  var total = tweetOrder.filter(function(i) { return !!cache[i]; }).length + 1;
-  var num = tweetOrder.indexOf(id) + 2;
+  var total = tweetOrder.filter(function(i) { return !!cache[i]; }).length + 2;
+  var pidx0 = tweetOrder.indexOf(id);
+  var num = pidx0 === 0 ? 2 : pidx0 + 3;
   renderFrame(id, num, total).then(function(dataUrl) {
     shots[id] = dataUrl;
     pvb.disabled = false;
@@ -569,12 +572,12 @@ function captureAll() {
   var btn = document.getElementById("cap-btn");
   btn.textContent = "Capture..."; btn.disabled = true;
   var ids = tweetOrder.filter(function(id) { return !!cache[id]; });
-  var total = ids.length + 1;
+  var total = ids.length + 2;
   var idx = 0;
   function next() {
     if (idx >= ids.length) { btn.textContent = "Capturer tout"; btn.disabled = false; updateUI(); return; }
     var id = ids[idx];
-    var num = idx + 2;
+    var num = idx === 0 ? 2 : idx + 3;
     idx++;
     setStatus(id, "load", "Capture...");
     renderFrame(id, num, total).then(function(dataUrl) {
@@ -603,7 +606,7 @@ function dlZip() {
   var dd = String(now.getDate()).padStart(2, "0");
   var mm = String(now.getMonth() + 1).padStart(2, "0");
   var yyyy = String(now.getFullYear());
-  var total = ids.length + 1;
+  var total = ids.length + 2;
   var name = total + "-screenshots_" + dd + "-" + mm + "-" + yyyy;
   var folder = zip.folder(name);
   fetch(COVER).then(function(r) { return r.blob(); }).then(function(blob) {
@@ -615,11 +618,25 @@ function dlZip() {
     });
   }).then(function(coverB64) {
     folder.file("01_cover.png", coverB64, { base64: true });
-    for (var j = 0; j < ids.length; j++) {
-      var num = String(j + 2).padStart(2, "0");
-      folder.file(num + "_tweet_" + ids[j] + ".png", shots[ids[j]].split(",")[1], { base64: true });
-    }
-    return zip.generateAsync({ type: "blob" });
+    return fetch(BONUS).then(function(r) { return r.blob(); }).then(function(bblob) {
+      return new Promise(function(res2, rej2) {
+        var r2 = new FileReader();
+        r2.onload = function() { res2(r2.result.split(",")[1]); };
+        r2.onerror = rej2;
+        r2.readAsDataURL(bblob);
+      });
+    }).then(function(bonusB64) {
+      for (var j = 0; j < ids.length; j++) {
+        if (j === 0) {
+          folder.file("02_tweet_" + ids[0] + ".png", shots[ids[0]].split(",")[1], { base64: true });
+          folder.file("03_bonus.png", bonusB64, { base64: true });
+        } else {
+          var num = String(j + 3).padStart(2, "0");
+          folder.file(num + "_tweet_" + ids[j] + ".png", shots[ids[j]].split(",")[1], { base64: true });
+        }
+      }
+      return zip.generateAsync({ type: "blob" });
+    });
   }).then(function(blob) {
     var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name + ".zip"; a.click();
     URL.revokeObjectURL(a.href); btn.textContent = "Telecharger ZIP"; btn.disabled = false;
