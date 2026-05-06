@@ -336,21 +336,21 @@ function linkify(t) {
 function buildImgGrid(images, large) {
   if (!images || !images.length) { return ""; }
   var n = Math.min(images.length, 4);
-  var cols = (n === 1) ? "1fr" : "1fr 1fr";
   var br = large ? "14" : "10";
   var mb = large ? "16" : "10";
-  var html = '<div style="display:grid;gap:3px;grid-template-columns:' + cols + ';border-radius:' + br + 'px;overflow:hidden;margin-bottom:' + mb + 'px">';
-  for (var i = 0; i < n; i++) {
-    var h, gc = "";
-    if (n === 1) { h = large ? "max-height:340px;border-radius:14px" : "max-height:220px;border-radius:10px"; }
-    else if (n === 2) { h = large ? "height:200px" : "height:120px"; }
-    else if (n === 3) {
-      if (i === 0) { h = large ? "height:220px" : "height:140px"; gc = "grid-column:1/3;"; }
-      else { h = large ? "height:180px" : "height:110px"; }
-    } else { h = large ? "height:180px" : "height:120px"; }
-    html += '<img src="' + images[i] + '" crossorigin="anonymous" style="width:100%;object-fit:cover;display:block;' + h + ';' + gc + '" onerror="this.style.display=\'none\'">';
+  var html = "";
+  if (n === 1) {
+    html = '<div style="border-radius:' + br + 'px;overflow:hidden;margin-bottom:' + mb + 'px">';
+    html += '<img src="' + images[0] + '" crossorigin="anonymous" style="width:100%;height:auto;display:block" onerror="this.style.display=\'none\'">';
+    html += "</div>";
+  } else {
+    html = '<div style="display:grid;gap:3px;grid-template-columns:1fr 1fr;border-radius:' + br + 'px;overflow:hidden;margin-bottom:' + mb + 'px">';
+    for (var i = 0; i < n; i++) {
+      var gc = (n === 3 && i === 0) ? "grid-column:1/3;" : "";
+      html += '<img src="' + images[i] + '" crossorigin="anonymous" style="width:100%;height:auto;display:block;' + gc + '" onerror="this.style.display=\'none\'">';
+    }
+    html += "</div>";
   }
-  html += "</div>";
   return html;
 }
 
