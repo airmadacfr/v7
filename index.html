@@ -406,7 +406,7 @@ function renderFrame(id) {
 
     /* -- OUTER WRAPPER: width fixed, height auto -- */
     var wrap = document.createElement("div");
-    wrap.style.cssText = "width:360px;height:640px;overflow:hidden;background:linear-gradient(170deg,#06111e 0%,#0d1b2e 45%,#111428 75%,#0a0e1a 100%);position:relative;padding:0 0 0 0";
+    wrap.style.cssText = "width:360px;background:linear-gradient(170deg,#06111e 0%,#0d1b2e 45%,#111428 75%,#0a0e1a 100%);position:relative;padding:0 0 0 0";
 
     /* accent line top */
     var tl = document.createElement("div");
@@ -469,7 +469,7 @@ function renderFrame(id) {
           allowTaint: false,
           logging: false,
           width: 360,
-          height: 640
+          height: wrap.scrollHeight
         }).then(function(canvas) {
           stage.innerHTML = "";
           resolve(canvas.toDataURL("image/png"));
