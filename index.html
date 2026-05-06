@@ -309,20 +309,26 @@ function linkify(t) {
 function buildImgs(images, large) {
   if (!images || !images.length) return "";
   var n = Math.min(images.length, 4);
-  var h1 = large ? "max-height:280px;border-radius:14px" : "max-height:220px;border-radius:10px";
-  var h2 = large ? "height:185px" : "height:120px";
-  var h3a = large ? "height:205px" : "height:140px";
-  var h3b = large ? "height:175px" : "height:110px";
-  var h4 = large ? "height:175px" : "height:120px";
-  var cols = n === 1 ? "1fr" : "1fr 1fr";
+  if (n === 1) {
+    var mh = large ? "max-height:260px" : "max-height:200px";
+    var br = large ? "14" : "10";
+    return '<div style="border-radius:' + br + 'px;overflow:hidden;margin-bottom:' + (large?12:10) + 'px;background:#1a2634">' +
+      '<img src="' + images[0] + '" crossorigin="anonymous" style="width:100%;display:block;' + mh + ';object-fit:contain" onerror="this.style.display=\'none\'">' +
+    '</div>';
+  }
+  var h2 = large ? "height:160px" : "height:110px";
+  var h3a = large ? "height:175px" : "height:125px";
+  var h3b = large ? "height:150px" : "height:100px";
+  var h4 = large ? "height:150px" : "height:110px";
+  var cols = "1fr 1fr";
   var inner = "";
   for (var i = 0; i < n; i++) {
-    var h = n===1 ? h1 : n===2 ? h2 : n===3 ? (i===0 ? h3a : h3b) : h4;
+    var h = n===2 ? h2 : n===3 ? (i===0 ? h3a : h3b) : h4;
     var gc = (n===3 && i===0) ? "grid-column:1/3;" : "";
     inner += '<img src="' + images[i] + '" crossorigin="anonymous" style="width:100%;object-fit:cover;display:block;' + h + ';' + gc + '" onerror="this.style.display=\'none\'">';
   }
   var br = large ? "14" : "10";
-  return '<div style="display:grid;gap:3px;grid-template-columns:' + cols + ';border-radius:' + br + 'px;overflow:hidden;margin-bottom:' + (large?14:10) + 'px">' + inner + '</div>';
+  return '<div style="display:grid;gap:3px;grid-template-columns:' + cols + ';border-radius:' + br + 'px;overflow:hidden;margin-bottom:' + (large?12:10) + 'px">' + inner + '</div>';
 }
 
 function buildPreview(d) {
@@ -343,22 +349,22 @@ function buildPreview(d) {
 }
 
 function buildCapture(d) {
-  return '<div style="display:flex;align-items:flex-start;gap:11px;margin-bottom:13px">' +
-      '<div style="width:48px;height:48px;border-radius:50%;overflow:hidden;flex-shrink:0">' +
+  return '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px">' +
+      '<div style="width:44px;height:44px;border-radius:50%;overflow:hidden;flex-shrink:0">' +
         '<img src="' + LOGO + '" style="width:100%;height:100%;object-fit:cover;display:block" alt="" crossorigin="anonymous">' +
       '</div>' +
       '<div style="flex:1;min-width:0">' +
-        '<div style="font-size:16px;font-weight:700;color:#e7e9ea;display:flex;align-items:center;gap:5px">' + esc(d.name) + '<span style="color:#1d9bf0">&#10003;</span></div>' +
-        '<div style="font-size:14px;color:#71767b;margin-top:2px">@' + esc(d.handle) + '</div>' +
+        '<div style="font-size:15px;font-weight:700;color:#e7e9ea;display:flex;align-items:center;gap:4px">RMadrid actu &#127467;&#127479; <span style="color:#1d9bf0;font-size:14px">&#10003;</span></div>' +
+        '<div style="font-size:13px;color:#71767b;margin-top:1px">@RMadrid_actu</div>' +
       '</div>' +
-      '<div style="font-weight:900;font-size:24px;color:#e7e9ea;line-height:1">&#120143;</div>' +
+      '<div style="font-weight:900;font-size:22px;color:#e7e9ea;line-height:1">&#120143;</div>' +
     '</div>' +
-    '<div style="font-size:17px;line-height:1.6;color:#e7e9ea;margin-bottom:14px;white-space:pre-wrap;word-break:break-word">' + linkify(d.text) + '</div>' +
+    '<div style="font-size:15px;line-height:1.55;color:#e7e9ea;margin-bottom:12px;white-space:pre-wrap;word-break:break-word">' + linkify(d.text) + '</div>' +
     buildImgs(d.images, true) +
-    (d.dateStr ? '<div style="font-size:13px;color:#71767b;padding-top:10px;border-top:1px solid #2f3336;margin-bottom:10px">' + esc(d.dateStr) + '</div>' : '') +
-    '<div style="display:flex;gap:20px;padding-top:10px;border-top:1px solid #2f3336">' +
-      '<span style="font-size:15px;color:#71767b">&#128172; Repondre</span>' +
-      '<span style="font-size:15px;color:#71767b">&#128156; ' + fmt(d.likes) + '</span>' +
+    (d.dateStr ? '<div style="font-size:12px;color:#71767b;padding-top:8px;border-top:1px solid #2f3336;margin-bottom:8px">' + esc(d.dateStr) + '</div>' : '') +
+    '<div style="display:flex;gap:18px;padding-top:8px;border-top:1px solid #2f3336">' +
+      '<span style="font-size:13px;color:#71767b">&#128172; R&#233;pondre</span>' +
+      '<span style="font-size:13px;color:#71767b">&#128156; ' + fmt(d.likes) + '</span>' +
     '</div>';
 }
 
@@ -393,36 +399,32 @@ function renderFrame(id) {
     frame.appendChild(tl);
 
     var ctaTop = document.createElement("div");
-    ctaTop.style.cssText = "position:relative;z-index:5;width:100%;padding:13px 18px 9px;text-align:center;flex-shrink:0";
-    ctaTop.innerHTML = '<div style="font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#fff;text-shadow:0 0 20px rgba(155,127,212,.9);line-height:1.4">&#128156; ABONNE-TOI - ON VISE LES 10 000 MADRIDISTAS &#128156;</div>' +
-      '<div style="font-size:10px;color:rgba(201,168,76,.9);margin-top:3px;font-weight:600;letter-spacing:.5px">@RMadrid_actu - L\'ACTU DU REAL MADRID EN FRANCAIS</div>';
+    ctaTop.style.cssText = "position:relative;z-index:5;width:100%;padding:10px 18px 7px;text-align:center;flex-shrink:0";
+    ctaTop.innerHTML = '<div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#fff;text-shadow:0 0 15px rgba(155,127,212,.7);line-height:1.3">&#129293; ABONNE-TOI &#8212; ON VISE LES 10 000 MADRIDISTAS &#129293;</div>' +
+      '<div style="font-size:9px;color:rgba(201,168,76,.85);margin-top:2px;font-weight:600;letter-spacing:.5px">&#127467;&#127479; @RMadrid_actu &#183; L\'ACTU DU REAL MADRID EN FRAN&#199;AIS</div>';
     frame.appendChild(ctaTop);
 
     var twZone = document.createElement("div");
-    twZone.style.cssText = "position:relative;z-index:5;flex:1;overflow:hidden;padding:4px 16px 6px;display:flex;align-items:center";
+    twZone.style.cssText = "position:relative;z-index:5;flex:1;overflow:hidden;padding:3px 14px 4px;display:flex;align-items:center";
     var twBox = document.createElement("div");
-    twBox.style.cssText = "width:100%;background:#15202b;border:1px solid #2f3336;border-radius:16px;padding:18px 20px;overflow:hidden";
+    twBox.style.cssText = "width:100%;background:#15202b;border:1px solid #2f3336;border-radius:14px;padding:14px 16px;overflow:hidden";
     twBox.innerHTML = buildCapture(d);
     twZone.appendChild(twBox);
     frame.appendChild(twZone);
 
     var ctaBot = document.createElement("div");
-    ctaBot.style.cssText = "position:relative;z-index:5;width:100%;padding:8px 14px 6px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:6px";
+    ctaBot.style.cssText = "position:relative;z-index:5;width:100%;padding:8px 14px 5px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:5px";
     ctaBot.innerHTML =
-      '<div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center">' +
-        '<span style="font-size:11px;font-weight:700;padding:5px 10px;border-radius:20px;background:rgba(239,68,68,.18);color:#ff7070;border:1px solid rgba(239,68,68,.35)">&#10084; LIKE si tu es Madridista</span>' +
-        '<span style="font-size:11px;font-weight:700;padding:5px 10px;border-radius:20px;background:rgba(29,155,240,.18);color:#60bfff;border:1px solid rgba(29,155,240,.35)">&#128228; PARTAGE a tes amis</span>' +
+      '<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">' +
+        '<span style="font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px;background:rgba(239,68,68,.15);color:#ff7070;border:1px solid rgba(239,68,68,.3)">&#10084; LIKE si t\'es madridista</span>' +
+        '<span style="font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px;background:rgba(29,155,240,.15);color:#60bfff;border:1px solid rgba(29,155,240,.3)">&#128228; PARTAGE &#224; tes amis</span>' +
       '</div>' +
-      '<span style="font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;background:rgba(201,168,76,.18);color:#F0D080;border:1px solid rgba(201,168,76,.4)">&#128276; ABONNE-TOI pour NE RIEN RATER SUR LE REAL MADRID</span>' +
-      '<div style="background:linear-gradient(90deg,rgba(201,168,76,.1),rgba(201,168,76,.32),rgba(201,168,76,.1));border:1px solid rgba(201,168,76,.55);border-radius:12px;padding:6px 20px;display:flex;align-items:center;gap:10px;margin-top:2px">' +
-        '<span style="font-size:16px;color:#F0D080;font-weight:900">&#9658;&#9658;</span>' +
-        '<span style="font-size:14px;font-weight:800;color:#F0D080;letter-spacing:2px;text-transform:uppercase;text-shadow:0 0 10px rgba(201,168,76,.5)">SWIPE POUR LA SUITE</span>' +
-        '<span style="font-size:16px;color:#F0D080;font-weight:900">&#9658;&#9658;</span>' +
-      '</div>';
+      '<span style="font-size:10px;font-weight:700;padding:4px 14px;border-radius:20px;background:rgba(201,168,76,.15);color:#F0D080;border:1px solid rgba(201,168,76,.35)">&#128276; ABONNE-TOI pour l\'actu RM chaque jour</span>' +
+      '<span style="font-size:9px;font-weight:600;color:rgba(255,255,255,.4);letter-spacing:.5px;margin-top:1px">&#9654; SWIPE pour la suite</span>';
     frame.appendChild(ctaBot);
 
     var wm = document.createElement("div");
-    wm.style.cssText = "position:relative;z-index:5;width:100%;height:36px;flex-shrink:0;background:linear-gradient(90deg,rgba(6,17,30,.98),rgba(17,20,40,.98),rgba(6,17,30,.98));border-top:1px solid rgba(155,127,212,.2);display:flex;align-items:center;justify-content:center;gap:8px";
+    wm.style.cssText = "position:relative;z-index:5;width:100%;height:32px;flex-shrink:0;background:linear-gradient(90deg,rgba(6,17,30,.98),rgba(17,20,40,.98),rgba(6,17,30,.98));border-top:1px solid rgba(155,127,212,.15);display:flex;align-items:center;justify-content:center;gap:7px";
     var wmL = document.createElement("img");
     wmL.src = LOGO; wmL.crossOrigin = "anonymous";
     wmL.style.cssText = "width:22px;height:22px;border-radius:50%;object-fit:cover";
