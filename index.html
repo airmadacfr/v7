@@ -120,17 +120,17 @@ var shots = {};
 var cache = {};
 var tweetOrder = [];
 var dragSrc = null;
- 
+
 document.getElementById("btn-load").addEventListener("click", loadAll);
 document.getElementById("btn-clear").addEventListener("click", clearAll);
 document.getElementById("cap-btn").addEventListener("click", captureAll);
 document.getElementById("dl-btn").addEventListener("click", dlZip);
- 
+
 window.addEventListener("focus", tryPaste);
 document.addEventListener("visibilitychange", function() {
   if (!document.hidden) { tryPaste(); }
 });
- 
+
 function tryPaste() {
   if (!navigator.clipboard || !navigator.clipboard.readText) { return; }
   navigator.clipboard.readText().then(function(text) {
@@ -145,14 +145,14 @@ function tryPaste() {
     showToast("Lien detecte et colle !");
   }).catch(function() {});
 }
- 
+
 function showToast(msg) {
   var t = document.getElementById("toast");
   t.textContent = msg;
   t.classList.add("show");
   setTimeout(function() { t.classList.remove("show"); }, 2800);
 }
- 
+
 function parseUrls(raw) {
   var lines = raw.split("\n");
   var result = [];
@@ -165,7 +165,7 @@ function parseUrls(raw) {
   }
   return result;
 }
- 
+
 function loadAll() {
   var raw = document.getElementById("urls").value;
   var tweets = parseUrls(raw);
@@ -184,7 +184,7 @@ function loadAll() {
     fetchTweet(tweets[j]);
   }
 }
- 
+
 function makeCard(t) {
   var grid = document.getElementById("grid");
   var card = document.createElement("div");
@@ -217,7 +217,7 @@ function makeCard(t) {
   })(t.id);
   initDrag(card);
 }
- 
+
 function initDrag(card) {
   card.addEventListener("dragstart", function(e) {
     dragSrc = card;
@@ -260,7 +260,7 @@ function initDrag(card) {
     updateUI();
   });
 }
- 
+
 function fetchTweet(t) {
   var id = t.id;
   var handle = t.handle;
@@ -322,44 +322,44 @@ function fetchTweet(t) {
     setStatus(id, "err", "Erreur");
   });
 }
- 
+
 function fmtNum(n) {
   if (n >= 1000) { return (n / 1000).toFixed(1) + "K"; }
   return String(n || 0);
 }
- 
+
 function escHtml(s) {
   return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
- 
+
 function linkify(t) {
   var s = escHtml(t);
   s = s.replace(/(#[\w]+)/g, '<span class="bl">$1</span>');
   s = s.replace(/(@\w+)/g, '<span class="bl">$1</span>');
   return s;
 }
- 
+
 function buildImgGrid(images, large) {
   if (!images || !images.length) { return ""; }
   var n = Math.min(images.length, 4);
   var cols = (n === 1) ? "1fr" : "1fr 1fr";
-  var br = large ? "14" : "10";
-  var mb = large ? "14" : "10";
+  var br = large ? "12" : "10";
+  var mb = large ? "10" : "10";
   var html = '<div style="display:grid;gap:3px;grid-template-columns:' + cols + ';border-radius:' + br + 'px;overflow:hidden;margin-bottom:' + mb + 'px">';
   for (var i = 0; i < n; i++) {
     var h, gc = "";
-    if (n === 1) { h = large ? "max-height:280px;border-radius:14px" : "max-height:220px;border-radius:10px"; }
-    else if (n === 2) { h = large ? "height:185px" : "height:120px"; }
+    if (n === 1) { h = large ? "max-height:200px;border-radius:12px" : "max-height:220px;border-radius:10px"; }
+    else if (n === 2) { h = large ? "height:150px" : "height:120px"; }
     else if (n === 3) {
-      if (i === 0) { h = large ? "height:205px" : "height:140px"; gc = "grid-column:1/3;"; }
-      else { h = large ? "height:175px" : "height:110px"; }
-    } else { h = large ? "height:175px" : "height:120px"; }
+      if (i === 0) { h = large ? "height:165px" : "height:140px"; gc = "grid-column:1/3;"; }
+      else { h = large ? "height:140px" : "height:110px"; }
+    } else { h = large ? "height:140px" : "height:120px"; }
     html += '<img src="' + images[i] + '" crossorigin="anonymous" style="width:100%;object-fit:cover;display:block;' + h + ';' + gc + '" onerror="this.style.display=\'none\'">';
   }
   html += '</div>';
   return html;
 }
- 
+
 function buildPreview(d) {
   return '<div class="tw">' +
     '<div class="tw-head">' +
@@ -379,29 +379,29 @@ function buildPreview(d) {
     '</div>' +
   '</div>';
 }
- 
+
 function buildCaptureInner(d) {
-  return '<div style="display:flex;align-items:flex-start;gap:11px;margin-bottom:13px">' +
-    '<div style="width:48px;height:48px;border-radius:50%;overflow:hidden;flex-shrink:0">' +
+  return '<div style="display:flex;align-items:flex-start;gap:9px;margin-bottom:10px">' +
+    '<div style="width:40px;height:40px;border-radius:50%;overflow:hidden;flex-shrink:0">' +
       '<img src="' + LOGO + '" style="width:100%;height:100%;object-fit:cover;display:block" alt="" crossorigin="anonymous">' +
     '</div>' +
     '<div style="flex:1;min-width:0">' +
-      '<div style="font-size:16px;font-weight:700;color:#e7e9ea;display:flex;align-items:center;gap:5px">' +
-        'RMadrid actu &#127467;&#127479; <span style="color:#1d9bf0">&#10003;</span>' +
+      '<div style="font-size:14px;font-weight:700;color:#e7e9ea;display:flex;align-items:center;gap:4px">' +
+        'RMadrid actu &#127467;&#127479; <span style="color:#1d9bf0;font-size:13px">&#10003;</span>' +
       '</div>' +
-      '<div style="font-size:14px;color:#71767b;margin-top:2px">@RMadrid_actu</div>' +
+      '<div style="font-size:12px;color:#71767b;margin-top:1px">@RMadrid_actu</div>' +
     '</div>' +
-    '<div style="font-weight:900;font-size:24px;color:#e7e9ea;line-height:1">&#120143;</div>' +
+    '<div style="font-weight:900;font-size:20px;color:#e7e9ea;line-height:1">&#120143;</div>' +
   '</div>' +
-  '<div style="font-size:17px;line-height:1.6;color:#e7e9ea;margin-bottom:14px;white-space:pre-wrap;word-break:break-word">' + linkify(d.text) + '</div>' +
+  '<div style="font-size:14px;line-height:1.5;color:#e7e9ea;margin-bottom:10px;white-space:pre-wrap;word-break:break-word">' + linkify(d.text) + '</div>' +
   buildImgGrid(d.images, true) +
-  (d.dateStr ? '<div style="font-size:13px;color:#71767b;padding-top:10px;border-top:1px solid #2f3336;margin-bottom:10px">' + escHtml(d.dateStr) + '</div>' : '') +
-  '<div style="display:flex;gap:20px;padding-top:10px;border-top:1px solid #2f3336">' +
-    '<span style="font-size:15px;color:#71767b">&#128172; R&#233;pondre</span>' +
-    '<span style="font-size:15px;color:#71767b">&#128156; ' + fmtNum(d.likes) + '</span>' +
+  (d.dateStr ? '<div style="font-size:11px;color:#71767b;padding-top:8px;border-top:1px solid #2f3336;margin-bottom:6px">' + escHtml(d.dateStr) + '</div>' : '') +
+  '<div style="display:flex;gap:16px;padding-top:8px;border-top:1px solid #2f3336">' +
+    '<span style="font-size:12px;color:#71767b">&#128172; R&#233;pondre</span>' +
+    '<span style="font-size:12px;color:#71767b">&#129293; ' + fmtNum(d.likes) + '</span>' +
   '</div>';
 }
- 
+
 function setStatus(id, type, text) {
   var dot = document.getElementById("dot-" + id);
   var st = document.getElementById("st-" + id);
@@ -413,7 +413,7 @@ function setStatus(id, type, text) {
     st.style.color = type === "ok" ? "var(--green)" : type === "err" ? "var(--red)" : "var(--grey)";
   }
 }
- 
+
 function renderFrame(id) {
   return new Promise(function(resolve, reject) {
     var d = cache[id];
@@ -440,7 +440,7 @@ function renderFrame(id) {
     var twZone = document.createElement("div");
     twZone.style.cssText = "position:relative;z-index:5;flex:1;overflow:hidden;padding:4px 16px 6px;display:flex;align-items:center";
     var twBox = document.createElement("div");
-    twBox.style.cssText = "width:100%;background:#15202b;border:1px solid #2f3336;border-radius:16px;padding:18px 20px;overflow:hidden";
+    twBox.style.cssText = "width:100%;background:#15202b;border:1px solid #2f3336;border-radius:14px;padding:14px 16px;overflow:hidden";
     twBox.innerHTML = buildCaptureInner(d);
     twZone.appendChild(twBox);
     frame.appendChild(twZone);
@@ -502,7 +502,7 @@ function renderFrame(id) {
     setTimeout(function() { doCapture(); }, 4000);
   });
 }
- 
+
 function captureOne(id) {
   var btn = document.getElementById("ssb-" + id);
   btn.textContent = "...";
@@ -520,7 +520,7 @@ function captureOne(id) {
     btn.disabled = false;
   });
 }
- 
+
 function captureAll() {
   var btn = document.getElementById("cap-btn");
   btn.textContent = "Capture...";
@@ -552,7 +552,7 @@ function captureAll() {
   }
   next();
 }
- 
+
 function dlOne(id) {
   if (!shots[id]) { return; }
   var a = document.createElement("a");
@@ -560,7 +560,7 @@ function dlOne(id) {
   a.download = "tweet_" + id + ".png";
   a.click();
 }
- 
+
 function dlZip() {
   var ids = [];
   for (var i = 0; i < tweetOrder.length; i++) {
@@ -591,7 +591,7 @@ function dlZip() {
     btn.disabled = false;
   });
 }
- 
+
 function updateUI() {
   var tl = Object.keys(cache).length;
   var ts = Object.keys(shots).length;
@@ -606,7 +606,7 @@ function updateUI() {
   document.getElementById("cap-btn").style.display = tl > 0 ? "inline-flex" : "none";
   document.getElementById("dl-btn").style.display = ts > 0 ? "inline-flex" : "none";
 }
- 
+
 function clearAll() {
   document.getElementById("urls").value = "";
   document.getElementById("grid").innerHTML = "";
