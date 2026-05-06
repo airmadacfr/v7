@@ -120,17 +120,17 @@ var shots = {};
 var cache = {};
 var tweetOrder = [];
 var dragSrc = null;
-
+ 
 document.getElementById("btn-load").addEventListener("click", loadAll);
 document.getElementById("btn-clear").addEventListener("click", clearAll);
 document.getElementById("cap-btn").addEventListener("click", captureAll);
 document.getElementById("dl-btn").addEventListener("click", dlZip);
-
+ 
 window.addEventListener("focus", tryPaste);
 document.addEventListener("visibilitychange", function() {
   if (!document.hidden) { tryPaste(); }
 });
-
+ 
 function tryPaste() {
   if (!navigator.clipboard || !navigator.clipboard.readText) { return; }
   navigator.clipboard.readText().then(function(text) {
@@ -145,14 +145,14 @@ function tryPaste() {
     showToast("Lien detecte et colle !");
   }).catch(function() {});
 }
-
+ 
 function showToast(msg) {
   var t = document.getElementById("toast");
   t.textContent = msg;
   t.classList.add("show");
   setTimeout(function() { t.classList.remove("show"); }, 2800);
 }
-
+ 
 function parseUrls(raw) {
   var lines = raw.split("\n");
   var result = [];
@@ -165,7 +165,7 @@ function parseUrls(raw) {
   }
   return result;
 }
-
+ 
 function loadAll() {
   var raw = document.getElementById("urls").value;
   var tweets = parseUrls(raw);
@@ -184,7 +184,7 @@ function loadAll() {
     fetchTweet(tweets[j]);
   }
 }
-
+ 
 function makeCard(t) {
   var grid = document.getElementById("grid");
   var card = document.createElement("div");
@@ -217,7 +217,7 @@ function makeCard(t) {
   })(t.id);
   initDrag(card);
 }
-
+ 
 function initDrag(card) {
   card.addEventListener("dragstart", function(e) {
     dragSrc = card;
@@ -260,7 +260,7 @@ function initDrag(card) {
     updateUI();
   });
 }
-
+ 
 function fetchTweet(t) {
   var id = t.id;
   var handle = t.handle;
@@ -322,23 +322,23 @@ function fetchTweet(t) {
     setStatus(id, "err", "Erreur");
   });
 }
-
+ 
 function fmtNum(n) {
   if (n >= 1000) { return (n / 1000).toFixed(1) + "K"; }
   return String(n || 0);
 }
-
+ 
 function escHtml(s) {
   return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
-
+ 
 function linkify(t) {
   var s = escHtml(t);
   s = s.replace(/(#[\w]+)/g, '<span class="bl">$1</span>');
   s = s.replace(/(@\w+)/g, '<span class="bl">$1</span>');
   return s;
 }
-
+ 
 function buildImgGrid(images, large) {
   if (!images || !images.length) { return ""; }
   var n = Math.min(images.length, 4);
@@ -359,7 +359,7 @@ function buildImgGrid(images, large) {
   html += '</div>';
   return html;
 }
-
+ 
 function buildPreview(d) {
   return '<div class="tw">' +
     '<div class="tw-head">' +
@@ -379,7 +379,7 @@ function buildPreview(d) {
     '</div>' +
   '</div>';
 }
-
+ 
 function buildCaptureInner(d) {
   return '<div style="display:flex;align-items:flex-start;gap:11px;margin-bottom:13px">' +
     '<div style="width:48px;height:48px;border-radius:50%;overflow:hidden;flex-shrink:0">' +
@@ -401,7 +401,7 @@ function buildCaptureInner(d) {
     '<span style="font-size:15px;color:#71767b">&#128156; ' + fmtNum(d.likes) + '</span>' +
   '</div>';
 }
-
+ 
 function setStatus(id, type, text) {
   var dot = document.getElementById("dot-" + id);
   var st = document.getElementById("st-" + id);
@@ -413,7 +413,7 @@ function setStatus(id, type, text) {
     st.style.color = type === "ok" ? "var(--green)" : type === "err" ? "var(--red)" : "var(--grey)";
   }
 }
-
+ 
 function renderFrame(id) {
   return new Promise(function(resolve, reject) {
     var d = cache[id];
@@ -447,12 +447,7 @@ function renderFrame(id) {
     var ctaBot = document.createElement("div");
     ctaBot.style.cssText = "position:relative;z-index:5;width:100%;padding:8px 14px 6px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:5px";
     ctaBot.innerHTML =
-      '<div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center">' +
-        '<span style="font-size:11px;font-weight:700;padding:5px 10px;border-radius:20px;background:rgba(239,68,68,.18);color:#ff7070;border:1px solid rgba(239,68,68,.35)">&#10084; LIKE si tu es Madridista</span>' +
-        '<span style="font-size:11px;font-weight:700;padding:5px 10px;border-radius:20px;background:rgba(29,155,240,.18);color:#60bfff;border:1px solid rgba(29,155,240,.35)">&#128228; PARTAGE a tes amis</span>' +
-      '</div>' +
-      '<span style="font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;background:rgba(201,168,76,.18);color:#F0D080;border:1px solid rgba(201,168,76,.4)">&#128276; ABONNE-TOI pour NE RIEN RATER SUR LE REAL MADRID</span>' +
-      '<div style="background:linear-gradient(90deg,rgba(201,168,76,.1),rgba(201,168,76,.32),rgba(201,168,76,.1));border:1px solid rgba(201,168,76,.55);border-radius:12px;padding:6px 20px;display:flex;align-items:center;gap:10px;margin-top:2px">' +
+      '<div style="background:linear-gradient(90deg,rgba(201,168,76,.1),rgba(201,168,76,.32),rgba(201,168,76,.1));border:1px solid rgba(201,168,76,.55);border-radius:12px;padding:6px 20px;display:flex;align-items:center;gap:10px">' +
         '<span style="font-size:16px;color:#F0D080;font-weight:900">&#9658;&#9658;</span>' +
         '<span style="font-size:14px;font-weight:800;color:#F0D080;letter-spacing:2px;text-transform:uppercase;text-shadow:0 0 10px rgba(201,168,76,.5)">SWIPE POUR LA SUITE</span>' +
         '<span style="font-size:16px;color:#F0D080;font-weight:900">&#9658;&#9658;</span>' +
@@ -507,7 +502,7 @@ function renderFrame(id) {
     setTimeout(function() { doCapture(); }, 4000);
   });
 }
-
+ 
 function captureOne(id) {
   var btn = document.getElementById("ssb-" + id);
   btn.textContent = "...";
@@ -525,7 +520,7 @@ function captureOne(id) {
     btn.disabled = false;
   });
 }
-
+ 
 function captureAll() {
   var btn = document.getElementById("cap-btn");
   btn.textContent = "Capture...";
@@ -557,7 +552,7 @@ function captureAll() {
   }
   next();
 }
-
+ 
 function dlOne(id) {
   if (!shots[id]) { return; }
   var a = document.createElement("a");
@@ -565,7 +560,7 @@ function dlOne(id) {
   a.download = "tweet_" + id + ".png";
   a.click();
 }
-
+ 
 function dlZip() {
   var ids = [];
   for (var i = 0; i < tweetOrder.length; i++) {
@@ -596,7 +591,7 @@ function dlZip() {
     btn.disabled = false;
   });
 }
-
+ 
 function updateUI() {
   var tl = Object.keys(cache).length;
   var ts = Object.keys(shots).length;
@@ -611,7 +606,7 @@ function updateUI() {
   document.getElementById("cap-btn").style.display = tl > 0 ? "inline-flex" : "none";
   document.getElementById("dl-btn").style.display = ts > 0 ? "inline-flex" : "none";
 }
-
+ 
 function clearAll() {
   document.getElementById("urls").value = "";
   document.getElementById("grid").innerHTML = "";
