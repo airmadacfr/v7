@@ -366,10 +366,9 @@ function buildPreview(d) {
     '</div>' +
     '<div class="tw-body">' + linkify(d.text) + '</div>' +
     buildImgGrid(d.images, false) +
-    (d.dateStr ? '<div class="tw-date">' + escHtml(d.dateStr) + '</div>' : '') +
+    '' +
     '<div class="tw-stats">' +
-      '<span class="tw-stat">&#128172; Repondre</span>' +
-      '<span class="tw-stat">&#128156; ' + fmtNum(d.likes) + '</span>' +
+      '<span class="tw-stat">&#129293; ' + fmtNum(d.likes) + '</span>' +
     '</div>' +
   '</div>';
 }
@@ -389,10 +388,9 @@ function buildCaptureInner(d) {
   '</div>' +
   '<div style="font-size:18px;line-height:1.65;color:#e7e9ea;margin-bottom:16px;white-space:pre-wrap;word-break:break-word">' + linkify(d.text) + '</div>' +
   buildImgGrid(d.images, true) +
-  (d.dateStr ? '<div style="font-size:14px;color:#71767b;padding-top:12px;border-top:1px solid #2f3336;margin-bottom:12px">' + escHtml(d.dateStr) + '</div>' : '') +
-  '<div style="display:flex;gap:22px;padding-top:12px;border-top:1px solid #2f3336">' +
-    '<span style="font-size:15px;color:#71767b;display:flex;align-items:center;gap:6px">&#128172; Repondre</span>' +
-    '<span style="font-size:15px;color:#71767b;display:flex;align-items:center;gap:6px">&#128156; ' + fmtNum(d.likes) + '</span>' +
+  '' +
+  '<div style="display:flex;padding-top:12px;border-top:1px solid #2f3336">' +
+    '<span style="font-size:16px;color:#71767b;display:flex;align-items:center;gap:6px">&#129293; ' + fmtNum(d.likes) + '</span>' +
   '</div>';
 }
 
@@ -431,7 +429,7 @@ function renderFrame(id) {
     ctaTop.style.cssText = "width:100%;padding:14px 20px 10px;text-align:center";
     ctaTop.innerHTML =
       '<div style="font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#fff;line-height:1.4">' +
-        '&#128156; ABONNE-TOI - ON VISE LES 10 000 MADRIDISTAS &#128156;' +
+        '&#129293; ABONNE-TOI - ON VISE LES 10 000 MADRIDISTAS &#129293;' +
       '</div>' +
       '<div style="font-size:11px;color:rgba(201,168,76,.9);margin-top:4px;font-weight:600;letter-spacing:.5px">' +
         '&#128242; @RMadrid_actu - L\'ACTU DU REAL MADRID EN FRANCAIS' +
